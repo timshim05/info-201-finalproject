@@ -4,28 +4,129 @@ output: html_document
 ---
 
 ```{r}
-library(tidyverse)
-mpv <- read.csv("Mapping Police Violence.csv")
-mpv <- mpv %>% select(date, state, county, gender, race, age)
-head(mpv)
-
-#date state county gender race age
-```
-
-```{r}
-cpop <- read.csv("co-est2022-alldata.csv")
-cpop<- cpop %>% select(STNAME, CTYNAME, ESTIMATESBASE2020, POPESTIMATE2020, POPESTIMATE2021, POPESTIMATE2022)
-head(cpop)
-#STNAME CTYNAME ESTIMATESBASE2020 POPESTIMATE2020 POPESTIMATE2021 POPESTIMATE2022
-
-```
-
-```{r}
+#Install and import required packages 
 library(readxl)
+library(dplyr)
+library(fuzzyjoin)
+library(stringdist)
+library(stringr)
+library(tidyverse)
+```
+
+#### Police Violence Data 
+
+```{r}
+# Post Rename Variable Names for mpv
+# State County date gender race age
+
+mpv <- read.csv("Mapping Police Violence.csv")
+mpv <- mpv %>% select(date, state, county, gender, race, age) %>%
+  rename(State = state, County = county)
+mpv$State <- state.name[match(mpv$State, state.abb)]  #changes state id to name
+
+```
+
+#### County Population Data
+
+```{r}
+# Post Rename Variable Names for cpop
+# State County ESTIMATESBASE2020 POPESTIMATE2020 POPESTIMATE2021 POPESTIMATE2022
+
+cpop <- read.csv("co-est2022-alldata.csv")
+cpop<- cpop %>% select(STNAME, CTYNAME, ESTIMATESBASE2020, POPESTIMATE2020, POPESTIMATE2021, POPESTIMATE2022) %>% rename(State = STNAME, County=CTYNAME)
+```
+
+#### Police Training Data
+
+```{r}
+# Post Rename Variable Names for pt
+# State basic_training field_training police_min_age
+
 pt <- read_excel("ICJTR+Basic+Training+Data+Set.xlsx")
 colnames(pt)[colnames(pt) == '\"POLICE OFFICER MINIMUM AGE\"'] <- "police min age"
-pt <- pt %>% select(STATE, `POLICE BASIC TRAINING HRS 2020`, `POLICE FIELD TRAINING`, `police min age`)
-pt
-#state POLICE BASIC TRAIING HRS 2020 POLICE FIELD TRAINING
+pt <- pt %>% select(STATE, `POLICE BASIC TRAINING HRS 2020`, `POLICE FIELD TRAINING`, `police min age`) %>% rename(State = STATE, basic_training = `POLICE BASIC TRAINING HRS 2020`, field_training =`POLICE FIELD TRAINING`, police_min_age = `police min age`)
 ```
 
+#### Land Area Data
+
+```{r}
+# Post Rename Variable Names for land_are
+# State County SQMI 
+
+land_area <- read.delim("2023_Gaz_counties_national.txt") 
+land_area <- land_area %>% select(USPS,NAME,ALAND_SQMI) %>% 
+  rename(County = NAME, SQMI = ALAND_SQMI, State = USPS)
+land_area$State <- state.name[match(land_area$State, state.abb)] #ST_ID to Name
+```
+
+#### Merging + New Numerical/Categorical
+
+```{r}
+# Post Merge & Rename Variable Names for pland
+# State County SQMI Population Density Denisty_c
+
+# Merge land area data and county population data
+pland <- merge(land_area, cpop, by = c('State','County'), 
+         all = TRUE) %>% filter(!is.na(SQMI)) 
+
+# New Numerical Value 'Population' as Average of Estimates 2020-2022
+pland <- pland %>% 
+  mutate(Population = rowMeans(select(
+    ., 
+    ESTIMATESBASE2020,
+    POPESTIMATE2020, 
+    POPESTIMATE2021, 
+    POPESTIMATE2022), 
+    na.rm = TRUE))
+
+#New Numerical Value 'Density' as Density of Population by SQ mi Area
+pland <- pland %>% 
+  mutate(Density = Population/SQMI)
+
+# New Categorical Value 'Density_c' as Range of population by SQ mi Area
+pland <- pland %>%
+  mutate(Density_c = cut(Population / SQMI, 
+        breaks = c(0, 10, 100, 1000, Inf),
+        labels = c("sparse", "low-moderate", "moderate-high", "very high"),
+        include.lowest = TRUE)) %>%
+  select(State,County,SQMI,Population,Density,Density_c)
+
+#uncomment to check 
+#pland
+```
+
+#### Final Merging 
+
+```{r}
+# Post Merge & Rename Variable Names for df_final
+# State County SQMI Population Density Density_c Victims
+
+#Sorts mpv and counts the number of victims 
+mpv2 <- mpv %>%
+  count(State, County, name = "Victims")
+
+# Remove "County" from County column in Pland if it exists
+# Changes to match naming conventions
+pland <- pland %>%
+  mutate(County = str_replace(County, " County$", "") %>% str_trim())
+
+# merge to final data set 
+df_final <- merge(pland,mpv2, by=c('State','County'),all=TRUE)
+# uncomment to check
+# df_final
+```
+
+#### Summarized data frame for Police Training and Victim Count
+
+```{r}
+# Post Merge & Rename Variable Names for ptmpv
+# State basic_training, field_training, police_min_age, Victims
+
+# count deaths by state 
+mpv3 <- mpv %>%
+  count(State, name = "Victims")
+ptmpv <- merge(pt,mpv3, by='State',all=TRUE) %>% 
+  select(State, basic_training, field_training, police_min_age, Victims) %>%
+  distinct() 
+
+```
