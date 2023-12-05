@@ -2,8 +2,15 @@
 
 (5 points) The Github readme file should contain a 1/2-1 page summary of your work.
 It should
+
+
+
 contain one figure that you have computed and created from data.
-tell who is the target audience of your story
+
+
+
+
+# tell who is the target audience of your story
 
 
 The target audience for our story varies on how you would take this information. From a community citizen, people that are living in areas with high reported crime/police violence can have a better understanding on the correlation/aspect that either contribute or influence it in their neighboorhood.
