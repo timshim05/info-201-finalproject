@@ -1,5 +1,31 @@
 ---
-title: "Police Violence yes"
+title: "201 FINAL PROJECT"
+output: html_document
 ---
 
+```{r}
+library(tidyverse)
+mpv <- read.csv("Mapping Police Violence.csv")
+mpv <- mpv %>% select(date, state, county, gender, race, age)
+head(mpv)
+
+#date state county gender race age
+```
+
+```{r}
+cpop <- read.csv("co-est2022-alldata.csv")
+cpop<- cpop %>% select(STNAME, CTYNAME, ESTIMATESBASE2020, POPESTIMATE2020, POPESTIMATE2021, POPESTIMATE2022)
+head(cpop)
+#STNAME CTYNAME ESTIMATESBASE2020 POPESTIMATE2020 POPESTIMATE2021 POPESTIMATE2022
+
+```
+
+```{r}
+library(readxl)
+pt <- read_excel("ICJTR+Basic+Training+Data+Set.xlsx")
+colnames(pt)[colnames(pt) == '\"POLICE OFFICER MINIMUM AGE\"'] <- "police min age"
+pt <- pt %>% select(STATE, `POLICE BASIC TRAINING HRS 2020`, `POLICE FIELD TRAINING`, `police min age`)
+pt
+#state POLICE BASIC TRAIING HRS 2020 POLICE FIELD TRAINING
+```
 
