@@ -3,7 +3,7 @@ title: "Data Documentation"
 ---
 
 #### What are the original data sources?
-## The first data source that we used is from "  ". This dataset shows the number of police brutalities and which countys/states they were in
+## The first data source that we used is from " https://airtable.com/appzVzSeINK1S3EVR/shroOenW19l1m3w0H/tblxearKzw8W7ViN8 ". This dataset shows the number of police brutalities and which countys/states they were in
 ## The second data source that we used is from " https://hdpulse.nimhd.nih.gov/data-portal/social/map?socialtopic=030&socialtopic_options=social_6&demo=00010&demo_options=income_3&race=00&race_options=race_7&sex=0&sex_options=sexboth_1&age=001&age_options=ageall_1&statefips=99&statefips_options=area_states " This dataset shows us the the income and population of each county/state in the United States of America.
 
 #### Explanation of all variables you include here.
