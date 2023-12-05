@@ -3,11 +3,27 @@ title: "Data Documentation"
 ---
 
 #### What are the original data sources?
+
 ## The first data source that we used is from " https://airtable.com/appzVzSeINK1S3EVR/shroOenW19l1m3w0H/tblxearKzw8W7ViN8 ". This dataset shows the number of police brutalities and which countys/states they were in
-## The second data source that we used is from " https://hdpulse.nimhd.nih.gov/data-portal/social/map?socialtopic=030&socialtopic_options=social_6&demo=00010&demo_options=income_3&race=00&race_options=race_7&sex=0&sex_options=sexboth_1&age=001&age_options=ageall_1&statefips=99&statefips_options=area_states " This dataset shows us the the income and population of each county/state in the United States of America.
+
+## The second data source that we used is from " https://hdpulse.nimhd.nih.gov/data-portal/social/map?socialtopic=030&socialtopic_options=social_6&demo=00010&demo_options=income_3&race=00&race_options=race_7&sex=0&sex_options=sexboth_1&age=001&age_options=ageall_1&statefips=99&statefips_options=area_states " This dataset shows us the income and population of each county/state in the United States of America.
+
+## The third data source that we used is from " 2023_Gaz_counties_national.txt ". This data source provides us with SQ mi area of all counties in the United States of America.
+
+## The fourth data source that we used is from " ICJTR+Basic+Training+Data+Set.xlsx ". This dataset shows us the amount of hours of training required for police officers and the required age to become a police officer.
 
 #### Explanation of all variables you include here.
-## MPV : is "Mapping Police Violence". This variable represents the first data source for police brutalities.
-## cpop : is ""
+## mpv : is "Mapping Police Violence" dataset. This variable represents the first data source for police brutalities.
+## cpop : is "County Population" dataset. This variable allows us to call the dataset for county population. We get population
+## pt : is "police training" dataset. This variable is the dataset for police training. This dataset allows us to get how many hours police have to train
+## land_area : is "2023_Gaz_counties_national.txt" dataset. 
+## pland : Merged land area data and county population data
+## Density : Density of Population by SQ mi Area
+## Population : is the average population Estimates 2020-2022
+## Density_c : Range of population by SQ mi Area in the county
+## mpv2 : mpv with the number of victims
+## df_final : final dataset
+## mpv3 : number of deaths in all counties
+## ptmpv: is the merged data of pt and mpv3
 
 #### Basic summary statistics: number of rows, column, and number of missing/otherwise invalid values by each column
