@@ -1,0 +1,9 @@
+---
+title: "Data Documentation"
+---
+
+#### What are the original data sources?
+
+#### Explanation of all variables you include here.
+
+#### Basic summary statistics: number of rows, column, and number of missing/otherwise invalid values by each column
