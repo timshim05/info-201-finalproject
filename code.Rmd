@@ -3,17 +3,26 @@ title: "201 FINAL PROJECT"
 output: html_document
 ---
 
+#### packages
+
 ```{r}
 #Install and import required packages 
 library(readxl)
 library(dplyr)
-library(fuzzyjoin)
+library(sf)
+library(leaflet)
+library(ggpubr)
+library(lubridate)
 library(stringdist)
 library(stringr)
 library(tidyverse)
+library(ggpmisc)
+library(leaflet.extras)
+library(ggplot2)
+library(leaftime)
 ```
 
-#### Police Violence Data 
+#### Police Violence Data
 
 ```{r}
 # Post Rename Variable Names for mpv
@@ -24,6 +33,17 @@ mpv <- mpv %>% select(date, state, county, gender, race, age) %>%
   rename(State = state, County = county)
 mpv$State <- state.name[match(mpv$State, state.abb)]  #changes state id to name
 
+mpv <- mpv%>%
+  mutate(State = ifelse(State == "Virgina", "Virginia", State)) %>%
+  mutate(State = ifelse(State == "Massachusetts", "Massachusettes", State))
+
+
+mpv$date <- substr(mpv$date, nchar(mpv$date) - 3, nchar(mpv$date))
+mpv <- mpv %>% filter(date=="2022")
+
+mpv
+
+
 ```
 
 #### County Population Data
@@ -33,7 +53,9 @@ mpv$State <- state.name[match(mpv$State, state.abb)]  #changes state id to name
 # State County ESTIMATESBASE2020 POPESTIMATE2020 POPESTIMATE2021 POPESTIMATE2022
 
 cpop <- read.csv("co-est2022-alldata.csv")
-cpop<- cpop %>% select(STNAME, CTYNAME, ESTIMATESBASE2020, POPESTIMATE2020, POPESTIMATE2021, POPESTIMATE2022) %>% rename(State = STNAME, County=CTYNAME)
+cpop<- cpop %>% select(STNAME, CTYNAME, ESTIMATESBASE2020, POPESTIMATE2020, POPESTIMATE2021, POPESTIMATE2022) %>% rename(State = STNAME, County=CTYNAME) %>%
+    mutate(State = ifelse(State == "Virgina", "Virginia", State)) %>%
+  mutate(State = ifelse(State == "Massachusetts", "Massachusettes", State))
 ```
 
 #### Police Training Data
@@ -45,6 +67,9 @@ cpop<- cpop %>% select(STNAME, CTYNAME, ESTIMATESBASE2020, POPESTIMATE2020, POPE
 pt <- read_excel("ICJTR+Basic+Training+Data+Set.xlsx")
 colnames(pt)[colnames(pt) == '\"POLICE OFFICER MINIMUM AGE\"'] <- "police min age"
 pt <- pt %>% select(STATE, `POLICE BASIC TRAINING HRS 2020`, `POLICE FIELD TRAINING`, `police min age`) %>% rename(State = STATE, basic_training = `POLICE BASIC TRAINING HRS 2020`, field_training =`POLICE FIELD TRAINING`, police_min_age = `police min age`)
+pt <- pt%>%
+  mutate(State = ifelse(State == "Virgina", "Virginia", State)) %>%
+  mutate(State = ifelse(State == "Massachusetts", "Massachusettes", State))
 ```
 
 #### Land Area Data
@@ -57,6 +82,9 @@ land_area <- read.delim("2023_Gaz_counties_national.txt")
 land_area <- land_area %>% select(USPS,NAME,ALAND_SQMI) %>% 
   rename(County = NAME, SQMI = ALAND_SQMI, State = USPS)
 land_area$State <- state.name[match(land_area$State, state.abb)] #ST_ID to Name
+land_area <- land_area%>%
+  mutate(State = ifelse(State == "Virgina", "Virginia", State)) %>%
+  mutate(State = ifelse(State == "Massachusetts", "Massachusettes", State))
 ```
 
 #### Merging + New Numerical/Categorical
@@ -92,10 +120,10 @@ pland <- pland %>%
   select(State,County,SQMI,Population,Density,Density_c)
 
 #uncomment to check 
-#pland
+pland
 ```
 
-#### Final Merging 
+#### Final Merging
 
 ```{r}
 # Post Merge & Rename Variable Names for df_final
@@ -113,7 +141,7 @@ pland <- pland %>%
 # merge to final data set 
 df_final <- merge(pland,mpv2, by=c('State','County'),all=TRUE)
 # uncomment to check
-# df_final
+ df_final
 ```
 
 #### Summarized data frame for Police Training and Victim Count
@@ -124,9 +152,236 @@ df_final <- merge(pland,mpv2, by=c('State','County'),all=TRUE)
 
 # count deaths by state 
 mpv3 <- mpv %>%
-  count(State, name = "Victims")
+  count(State, name = "Victims") 
+
 ptmpv <- merge(pt,mpv3, by='State',all=TRUE) %>% 
   select(State, basic_training, field_training, police_min_age, Victims) %>%
-  distinct() 
+  distinct() %>%
+  filter(State != "Washington D.C.*") %>%
+  filter(!is.na(police_min_age))
+ptmpv
+```
+
+#### Figure 1 : Victim Ratio vs Police Training Hours
+
+```{r}
+# Create data table of final set for temp use
+df_final_temp <- df_final %>%
+  group_by(State) %>%
+  summarise(total_population = sum(Population, na.rm = TRUE)) %>%
+  na.omit()
+
+#Add columns for population to victim rate and training total hours
+ptmpv <- ptmpv %>% 
+  mutate(Victims_TotalPop = Victims/df_final_temp$total_population) %>%
+  mutate(TotalTraining = basic_training + as.numeric(field_training)) 
+
+# Graph 
+ggplot(ptmpv, aes(x = TotalTraining, y = Victims_TotalPop)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  stat_poly_eq(formula = y ~ x, 
+               aes(label = paste(..rr.label.., sep = " ~ ")),
+               parse = TRUE,
+               size = 4) +  
+  labs(title = "Victim Ratio vs Total Police Training Hours",
+       x = "Total Training Hours",
+       y = "Victims to Total Population Ratio") +
+  theme_minimal()
+
+
+
+```
+
+#### Figure 2 : Victim Ratio vs Field Training Hours
+
+```{r}
+#Graph 
+ggplot(ptmpv, aes(x = as.numeric(field_training), y = Victims_TotalPop)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  stat_poly_eq(formula = y ~ x, 
+               aes(label = paste(..rr.label.., sep = " ~ ")),
+               parse = TRUE,
+               size = 4) +  
+  labs(title = "Victim Ratio vs Field Police Training Hours",
+       x = "Field Training Hours",
+       y = "Victims to Total Population Ratio") +
+  theme_minimal()
+```
+
+#### Figure 3 : Victim Ratio vs Basic Training Hours
+
+```{r}
+#Graph 
+ggplot(ptmpv, aes(x = as.numeric(basic_training), y = Victims_TotalPop)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  stat_poly_eq(formula = y ~ x, 
+               aes(label = paste(..rr.label.., sep = " ~ ")),
+               parse = TRUE,
+               size = 4) +  
+  labs(title = "Victim Ratio vs Basic Police Training Hours",
+       x = "Basic Training Hours",
+       y = "Victims to Total Population Ratio") +
+  theme_minimal()
+```
+
+#### Figure 4 : Victim Ratio vs County Density
+
+```{r}
+# Create data table of final set for temp use
+df_final_temp <- df_final %>%
+  group_by(State) %>% 
+  mutate(total_population = sum(Population, na.rm = TRUE)) %>%
+  mutate(Victims = coalesce(Victims, 0))
+
+# Graph 
+ggplot(df_final_temp, aes(x = Density,
+  y = Victims/df_final_temp$total_population)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  stat_poly_eq(formula = y ~ x, 
+               aes(label = paste(..rr.label.., sep = " ~ ")),
+               parse = TRUE,
+               size = 4) +  
+  labs(title = "Victim Ratio vs US County Density",
+       x = "Density per sq mi",
+       y = "Victims to Total Population Ratio") +
+  theme_minimal()
+
+```
+
+#### Figure 5 Victim Ratio and County density 
+
+```{r}
+df_final_temp <- df_final %>%
+  group_by(State, Density_c) %>%  # Group by both State and Density
+  summarise(total_population = sum(Population, na.rm = TRUE),
+            Victims = sum(coalesce(Victims, 0)))  %>%
+  filter(!is.na(Density_c))
+
+# Graph with geom_bar
+ggplot(df_final_temp, aes(x = Density_c,
+  y = (Victims/total_population)*100000,
+  fill=factor(Density_c))) +  
+  geom_bar(stat = "identity") +
+  labs(title = "Victim Ratio and US County Density Category",
+       x = "Density Category",
+       y = "Victims to per 100,000 population",
+       fill = "Desnity Category") +
+  theme_minimal()
+```
+
+#### Figure 6 : Washington Victims vs County Density
+
+```{r}
+# Create data table of final set for temp use
+df_final_temp <- df_final %>%
+  filter(State == "Washington") %>% #Change State here
+  mutate(Victims = coalesce(Victims, 0))
+
+# Graph 
+ggplot(df_final_temp, aes(x = Density,
+  y = Victims/Population*10000)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  stat_poly_eq(formula = y ~ x, 
+               aes(label = paste(..rr.label.., sep = " ~ ")),
+               parse = TRUE,
+               size = 4) +  
+  labs(title = "Victim Ratio vs Washington's County Density",
+       x = "Density per sq mi",
+       y = "Victims per 10,000",
+       color = "") +
+  theme_minimal()
+
+```
+
+#### Figure 7 : State Visualization 
+
+```{r}
+# Replace With STATE county Shapefile Folder
+counties <- st_read("SHOREWA")
+
+df_final_temp <- df_final %>%
+  filter(State == "Washington") %>%
+  rename(COUNTY = County) %>%
+  group_by(COUNTY) %>%
+  select(COUNTY, Population, Density)
+
+mpv_temp <- mpv %>%
+  filter(State == "Washington") %>%
+  rename(COUNTY = County) %>%
+  group_by(COUNTY) %>%
+  summarise(Victims = n()) %>%
+  distinct() %>%
+  ungroup()
+
+mpv_temp <- merge(df_final_temp,mpv_temp, by="COUNTY", all=TRUE) 
+mpv_temp$COUNTY <- toupper(mpv_temp$COUNTY)
+
+mpv_temp <- mpv_temp %>%
+  mutate(VictimRatio = Victims/Population * 1000)
+
+map_data <- merge(counties, mpv_temp, by.x = "COUNTY", by.y = "COUNTY", all = FALSE)
+color_scale <- scale_fill_gradient(
+  low = "beige",
+  high = "red",
+  na.value = "grey"  
+)
+
+ggplot() +
+  geom_sf(data = map_data, aes(fill = VictimRatio), color = "white", size = 0.2) +
+  color_scale +
+  labs(title = "Victims per 1000 by County in Washington State in 2022",
+       fill = "Victims per 1000",
+       x="Grey indicates missing data or 0 deaths")
+```
+
+#### National Visualization per 2022
+
+```{r}
+# Replace With STATE county Shapefile Folder
+counties <- st_read("USAshapefile")
+
+df_final_temp <- df_final %>%
+  rename(NAME = County) %>%
+  group_by(NAME) %>%
+  select(NAME, Population, Density)
+
+mpv_temp <- mpv %>%
+  rename(NAME = County) %>%
+  group_by(NAME) %>%
+  summarise(Victims = n()) %>%
+  distinct() %>%
+  ungroup()
+#Dont change anything above this 
+
+mpv_temp <- merge(df_final_temp,mpv_temp, by="NAME", all=TRUE) 
+mpv_temp$NAME <- toupper(mpv_temp$NAME)
+counties$NAME <- toupper(counties$NAME)
+counties <- counties %>% filter(STATE_NAME!="Alaska")
+mpv_temp <- mpv_temp %>%
+  mutate(VictimRatio = Victims/Population * 1000)
+
+map_data <- merge(counties, mpv_temp, by.x = "NAME", by.y = "NAME", all = FALSE)
+map_data <- map_data %>%
+  mutate(VictimRatio = ifelse((VictimRatio==0), NA , VictimRatio))
+ 
+leaflet(data = map_data) %>%
+  addProviderTiles("OpenStreetMap.Mapnik") %>%
+  addPolygons(
+    data = map_data,
+    fillColor = ~colorQuantile("YlOrRd", map_data$VictimRatio, n = 10)(map_data$VictimRatio),,
+    fillOpacity = 0.7,
+    color = "lightblue",
+    weight = 1,
+    label = ~paste(NAME, "<br>", "Victims per 1000:", formatC(VictimRatio, format = "f", digits = 1))
+  ) %>%
+  addScaleBar(position = "bottomleft") %>%
+  addMiniMap(position = "bottomleft") %>%
+  addControl("zoomSlider", position = "topright") %>%
+  addFullscreenControl()
 
 ```
