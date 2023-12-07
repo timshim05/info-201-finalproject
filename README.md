@@ -6,8 +6,7 @@ It should
 
 
 # contain one figure that you have computed and created from data.
-<img width="570" alt="Screenshot 2023-12-06 at 10 27 52 PM" src="https://github.com/timshim05/info-201-finalproject/assets/151678224/f9754a37-09dd-49fd-9355-9ff1f2b8913c">
-
+Within the US, we found the relationships between police violence victim counts and population density within each County to have an r^2 value of less than .01 indicating that there is no relationship with each other. 
 
 
 
