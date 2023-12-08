@@ -1,0 +1,179 @@
+---
+title: "Police Violence Project"
+output: html_document
+---
+
+# Introduction
+
+Police violence stands as a compelling and vital topic with far-reaching implications for justice, equality, public safety, and community-police relations. It prompts discussions and actions aimed at reshaping the criminal justice system to be fair and accountable. This issue brings attention to systemic inequalities, emphasizing the need for transparency and accountability within law enforcement. It contributes to public safety by creating awareness of potential risks and rebuilding trust between communities and the police. Furthermore, police violence serves as a catalyst for policy reforms, legislative changes, and community engagement, fostering a collective effort to address systemic issues such as racism and inequality. The media's role in shaping public awareness and the international perspective on this issue further amplify its significance, emphasizing the global nature of the challenge and the shared responsibility to seek equitable solutions. In essence, police violence acts as a linchpin for comprehensive discussions and actions, driving societies toward a more just, accountable, and community-oriented approach to law enforcement.
+
+The topic of police violence has been extensively covered in the media and academic literature. There have been multiple stories on excessive use of police power, racial inequalities, racism, and the push for systematic change in law enforcement. An example of police violence coming to uproar in media is the Black Lives Matter movement. "Black Lives Matter (BLM) is a decentralized political and social movement that seeks to highlight racism, discrimination, and racial inequality experienced by black people, and promote anti-racism. Its primary concerns are incidents of police brutality and racially motivated violence against black people." We already know that there are crimes happening around the world but we wanted to provide information for people about what areas have potential danger to keep them aware of what goes on around their city. This is interesting because we can see the types of reasons for police violence in the world, why people do it , etc. Something I want to add to what already exists is answers to the causes of police violence in the United States.
+
+With multiple knowledge on what we already know on police violence in the US. We want to highlight why we are doing this. Some question we would like to answer based off of the data is...
+
+### Question 1: What are the root causes of police violence?
+
+Why do some people die due to police violence when they were either unarmed or did not threaten them at all? What are the main causes of police violence? What trends can we find among police violence and its association to mental illness or population density.
+
+### Question 2: How effective are current accountability mechanisms, including body-worn cameras and internal investigations?
+
+We would like to investigate if body cam footage keep police officers accountable or if they don't
+
+### Question 3: Where is police violence more prevalent?
+
+We want to explore where police violence is more commonly located. With this we can have a general idea of why it is more prevalent in these areas and can open more questions on
+
+## **Why should someone care about our report?**
+
+250,000 - An estimated 250,000 civilian injuries are caused by law enforcement officers annually.
+
+600 - More than 600 people are killed by law enforcement in the U.S. each year.
+
+These are some facts from the "Law Enforcement Epidemiology Project" from the University of Illinois.
+
+This is interesting because being able to see the correlation with certain things/topic that lead to police violence is crucial information to keep people informed on the law enforcement and the causes of violence in our communities
+
+People should care about this report since police violence is a on going problem in the United States. Being able to have the right to life, security, and freedom. Addressing and researching this issue will uphold that the fundamental right for everyone from discrimination. In general, reading this report will make you informed on the relationships between people and law enforcement and see the causes that could lead to police violence. Which ultimately, will help create a more safer knowledgeable community.
+
+# Explain Your **Data** 
+
+**Why do you use these datasets?**
+
+All the data that we chose for this project all relate to police violence and population. All datasets are from the year 2022. The reason for that is because we wanted all our data to match up with dates. The reason we chose police violence and population density (United States Counties) was because we wanted to find how the amount of hours police 
+
+**Where do your datasets originate from?**
+
+These datasets originate from many different sources. Our first data source is about the mapping of police violence, so we searched on the organization website for police violence. Our 2nd data source is about police training and how much training they receive before becoming a cop. We were able to receive that data from the  \"<https://www.trainingreform.org/not-enough-training>\" website. We were able to also get a census data to see areas of counties with their population and that information is from this link: <https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2020-2022/CO-EST2022-ALLDATA.pdf>. 
+
+**Who collected the data?**
+
+The dataset we used for finding the victims to police violence is a independant collected dataset from people around the world and for reliablity, there are evidence such as, new articles and information on the case to show that it is indeed true. For our population dataset, is a census data that is collected from the Census Bureau. Finally, for the police training dataset was collected from a independent organization that used an agenda to file their dataset.
+
+**The data usage permissions: are the data freely available for everyone? Are there certain restrictions on who can access data, or for what purpose it can be used?**
+
+All the datasets that we have researched for the projects were all received from public websites. These websites were either information websites that wanted to share the information to the public or they were data provided by the government about the counties in the United States, which is considered public information.
+
+**What are the datasets about? What is the population and what is the sample?**
+
+The data sets are about...
+
+1.  Cases of police violence in the United States per state/county
+2.  Population and Density per state
+3.  Amount of police training or field experience requires per state/county
+    1.  Population of the police violence data set are people in the United States, same goes for Population/Density data sets
+    2.  The population for police training data set would be law enforcement departments in the counties of United States
+        1.  The sample for the police violence data set would be victim of the police violence
+        2.  Sample for population/density data set would be each county in every state
+        3.  Sample for the police training data set would be officers in each department and how much training they received specifically
+
+**Discuss any data quality issues you encountered**
+
+Data quality issues that we have encountered while working with the data was that there was a lot of missing information. Having missing values in the datasets could change the trend of our graphs and potentially change the outcome of our conclusion. Another issue that we came across as we worked with the datasets was that the names were slightly different from each other which created a big hassle when trying to combine the datasets. Because of this we had to remove Alaska out of the dataset due to compilations of not being able to combine the datasets together.
+
+\
+**What do rows represent in your final dataset?**
+
+In our final dataset, where we've carefully sorted and organized everything, each row now shows info about either a county or a state. Our main focus is on checking out counties, and we're looking at simple things like how many people live there, how crowded it is, and the number of folks who've been victims of police violence.By concentrating on counties, we want to understand the connection between everyday people stuff (like how many people live in an area) and police violence. This way, we hope to find out more about what's happening in different places. Our step-by-step look at the details helps us uncover hidden patterns and understand more about the link between regular population info and the unfortunate incidents of police violence in different areas.
+
+**How many observations do you have?**
+
+Through the graphing and computing of our data set we found that our originally hypothesized relationships do not in fact exist. We found that there was no relationship between police training and violence in Counties. Additionally there was no relationship between police violence and the density of Counties. Further we did see that a large portion of data was missing for certain counties. Specifically, our data for Alaska was missing and created a largely untrustworthy and skewed dataset. 
+
+**What are the relevant variables and how are they coded?**
+
+The most relevant variable that was used for every graph was the Victim Ratio. By filtering our police violence data set for all cases in 2022, we created a column of counts in each US County. Then, dividing the total number of victims by population we were able to control for population differences. The formula was largely basic and looked like the following: TotalVictims / TotalPopulation = VictimRatio. 
+
+We also created a Density Category and Density variable. Similarly these were calculated using sq milage and total population in each county with a similar formula. The categories were created by splitting the total range of densities in 4, making: sparse, low-moderate, moderate-high, very high. 
+
+**Are there any missings, non-plausible values, or other quality issues in the relevant variables? How many?**
+
+There are a number of missing values in both the Density and Victim Ratio. This was mainly due to missing data in the original data. Additionally, we did depreciate some data due to there being differences in naming conventions between our merged data set. 
+
+While it\'s hard to tell whether or not we had any non-plausible values, no state had a negative Victim ratio or density.
+
+# Discuss Your **Methods**
+
+#### **Which variables did you include, and why?**
+
+The first variable that we wanted to include is the \"Police Violence data\". In looking at police violence data, we decided to focus on three main things: the State, County, and date of every incident. We kept the data simple by not including other details like the victim's race, age, gender, or circumstances, as that was more than what we wanted to tackle initially. Our goal was to get the total count of victims in each area.By sticking to the State and County details, we made it easier to combine different sets of data, although we did face some challenges in putting them together. We believed that by keeping these geographic details, we could create a merged dataset that would be easier to work with and give us a good overall picture, even if the merging part was a bit tricky.
+
+County Population + land_area census: we kept the State and County to keep as an identifying key to merge the two data sets together. Keeping the population from 2022 (the year we specified). Keeping the year specified allowed us to have a smaller \"range\" to keep track of so we could make the most accurate result possible. Since 2022 is the most recent full year and a fully clean year from the pandemic we decided to use 2022 as our year.
+
+We knew later we wanted to reference police training data. While they didnt have a match identifier by county we merged it by State, keeping all of the variables from this data set aside from the minimum police age. 
+
+#### **How did you process your data, and why?**
+
+The main challenge that we faced during the process of our final data set was trying to match each data by each County. To elaborate, we found that the different data sets that we used had different naming conventions for each respective county. This means that one data set is called King County and another data set says King County, but another data set would simply call it \"King\". A large bulk of our processing was addressing this issue so that when the final merging took place it would remain clean and we would have gotten rid of all duplication errors. 
+
+Subset to this, our data processing also had to address the different amount of missing values contained in each data county. In the victim database not all Counties were listed, simply meaning that there were no recorded deaths in that County. This meant however when merging the data sets we would result in NA values and had to manually change is.na(x) values to be 0. 
+
+Manually, we also found the police data set in particular to name Massachusettes incorrectly and had to manually change that. 
+
+#### **How did you select your sample?**
+
+We focused our study on the United States because, for a while now, there's been a lot of talk about police violence and brutality here. It's not just an academic interest; it hits close to home because it's the country we live in. We wanted to keep things relatable for our audience, which is mostly people from the U.S.
+
+Police violence has been a big deal in the U.S., and by looking at it here, we hope our research adds something useful to the ongoing conversations about how the police operate, how they're held accountable, and what changes might be needed. Our goal is to use simple data from our own backyard to bring attention to the issue and help our fellow citizens better understand what's happening.
+
+#### **Any technical decisions you made, such as either to remove missing or replace missing values with another one?**
+
+As mentioned before our data has missing county information. This led us to change the number of victims in those counties to zero in the data. Another technical decision we had to make was we had to rename the county names due to the fact that the data sets had different name titles for different counties. This gave us too many issues when attempting to merge the data sets together, so we had to change them so that they are able to merge together. The thirds technical decision we had to make was removing the data from Alaska counties overall because there were too many missing information for us to create viable data
+
+#### **If you use more complex statistical methods, such as regression, these should also be discussed here.**
+
+We did not have any complex statistical methods or a regression. Majority of the data that we used were either from a visual or from a linear relationship.
+
+# Talk About Your Results
+
+### Figure 1 - Victim Ratio vs Field Training Hour
+
+We compared the victims to total population ratio to the amount of FIELD training hours. This means if police officers had more experience on the field of their areas correlated to high police violence or less police violence. We notices most states/counties don't have any field hours required to become a police officer, which was interesting to see since you would think police officers should have experience on the field before actually becoming a police officer
+
+### Figure 2 - Victim Ratio vs Basic Training Hours
+
+Figure One is just a comparison of the victim ratio to population ratio in each county compared to the basic police training hours in each state. We did this to see if there was a correlation between the amount of training police officers get to police violence cases in the United States. We did not see a too big significant correlation to say it was a factor in increase police violence.
+
+### Figure 3 - Victim Ratio vs County Density
+
+This bar graph shows the variable categories we created for the density of each county. The category we made were sparse, low-moderate, moderate-high, very-high. We made if the density/population of each county was a certain "level" it was put into the category we made. We didn't see any drastic changes in the correlation between victim ratio and county density, as seen in the graph.
+
+### Figure 4 - Victim Ratio and County Density Category
+
+This bar graph shows the variable categories we created for the density of each county. The category we made were sparse, low-moderate, moderate-high, very-high. We made if the density/population of each county was a certain "level" it was put into the category we made. We didn't see any drastic changes in the correlation between victim ratio and county density, as seen in the graph.
+
+### Figure 5 - Washington Victims vs County Density
+
+This figure is the same as Figure 3 but with a more specific focus on a certain state. We had the same result as Figure 3, no correlation.
+
+### Figure 6 - State Visualization
+
+This graph is a map of Washington state that shows which part Washington had police violence victims. Since some counties in Washington did not have any cases of police violence they were kept gray or were taken out of the data for the graph. But overall this graph shows what counties in Washington had the most or least police violence victims. The best thing about this is if you change the state name in the code to any state in the United States it will show you the graph/map for that state.
+
+# **Discuss** Your Findings 
+
+**What do the results tell you regarding of your question you asked in introduction, or about the story line you want to focus on?**
+
+The results that we obtained from our data we learned that there is no significant correlation between population density and the amount of victims from police violence. We also wanted to see if the amount of training that the police officers were required to go through in each county changed the number of victims. The data showed us that there is also no direct correlation of victim count due to population or hours of training.
+
+**\
+What are the limitations--how far do you think you can extend your claims or story?**
+
+The limitations we had with this data was that there was a lot of non-existent data for some of the counties. This affected the graphs that we outputted for some of the data because there was no point on the graph for them or they were put as 0 in the data table. I do not think that we can extend this claim or story far only due to the fact that we were unable to find clear correlation with the data sets, but if we are able to find a different data set that could potentially correlate to police violence victims then I do believe that we are able to find this claim useful.
+
+\
+**Give directions for future work--what analysis/data you might need to extend your story further?**
+
+To extend our story further, we can explore the other categories in the Mapping to Police Violence, such as race, gender, age, and many others. We can analyze ho these factor might play into police violence cases and see if there are any correlations between them. We could also have comparison with social indicators such as social-economic status, education level, neighborhood characteristics. We could explore multiple correlations between these variables with police violence.
+
+Something that may be interesting could be comparing these factors/results to other places around the world and why some places might have higher level of police violence than other countries. 
+
+**\
+Takeaway Message**
+
+When choosing these data sets we wanted to cover the issues of police violence in the different counties around the United States, more specifically Washington,and see if certain correlations could lead to more common police violence victims. We collected multiple data sources to analyze this, but we faced challenges like missing information and differences in how places are named.
+
+With our prediction being wrong and our results surprising us, since we would think places with more people or police officers with less training would correlate with more police violence. This makes us think of other factors such as race, gender, age, economic status since our data didn\'t show any correlations.
+
+The results that we have created emphasizes that police violence is an ongoing problem that is complex in our society, and we need to be more understanding of it. We noticed and took in our limitations with our data collection, for example, missing information/values and name differences in our categories. Even though we had a difficult time comparing the data sets due to the differences between them, our results aim to help contribute to the idea of police violence 
+
+A takeaway message from this project is that police violence is a very difficult and complex issue. First our data seemed like it would show correlation but in the end there was no clear correlation between the population density and police violence victims or the police training hours.
