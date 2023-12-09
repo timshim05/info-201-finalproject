@@ -169,7 +169,7 @@ mpv <- mpv%>%
 mpv$date <- substr(mpv$date, nchar(mpv$date) - 3, nchar(mpv$date))
 mpv <- mpv %>% filter(date=="2022")
 
-mpv
+head(mpv)
 
 
 
@@ -277,7 +277,7 @@ pland <- pland %>%
   select(State,County,SQMI,Population,Density,Density_c)
 
 #uncomment to check 
-pland
+head(pland)
 
 #### Final Merging
 
@@ -297,7 +297,7 @@ pland <- pland %>%
 # merge to final data set 
 df_final <- merge(pland,mpv2, by=c('State','County'),all=TRUE)
 # uncomment to check
- df_final
+ head(df_final)
 #### Summarized data frame for Police Training and Victim Count
 
 
@@ -313,7 +313,7 @@ ptmpv <- merge(pt,mpv3, by='State',all=TRUE) %>%
   distinct() %>%
   filter(State != "Washington D.C.*") %>%
   filter(!is.na(police_min_age))
-ptmpv
+head(ptmpv)
 ```
 
 # Talk About Your Results
@@ -322,7 +322,7 @@ ptmpv
 
 ```{r}
 #Graph 
-ggplot(ptmpv, aes(x = as.numeric(field_training), y = Victims_TotalPop)) +
+ggplot(ptmpv, aes(x = as.numeric(field_training), y = Victims)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
   stat_poly_eq(formula = y ~ x, 
@@ -341,7 +341,7 @@ We compared the victims to total population ratio to the amount of FIELD trainin
 
 ```{r}
 #Graph 
-ggplot(ptmpv, aes(x = as.numeric(basic_training), y = Victims_TotalPop)) +
+ggplot(ptmpv, aes(x = as.numeric(basic_training), y = Victims)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
   stat_poly_eq(formula = y ~ x, 
@@ -434,7 +434,7 @@ This figure is the same as Figure 3 but with a more specific focus on a certain 
 
 ```{r}
 # Replace With STATE county Shapefile Folder
-counties <- st_read("SHOREWA")
+counties <- st_read("SHOREWA/SHOREWA")
 
 df_final_temp <- df_final %>%
   filter(State == "Washington") %>%
